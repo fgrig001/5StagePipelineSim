@@ -1,5 +1,6 @@
  5StagePipelineSim
  ================
+ 
 A 5-stage pipeline simulator with an easy-to-use user interface for tweaking settings inputting instructions for simulation. 
 
 Dependencies
