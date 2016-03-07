@@ -3,6 +3,8 @@
 #include <QPushButton>
 #include <QMainWindow>
 #include <QDockWidget>
+#include <QListWidget>
+#include <QCheckBox>
 
 
 //! The main window for this application.
@@ -13,5 +15,14 @@ class MainWindow : public QMainWindow{
 	public:
 		explicit MainWindow(QMainWindow *parent=0);
 	private:
+		QListWidget *ListWidget;
+		QPushButton *AddButton;
+		QPushButton *RemoveButton;
+		QPushButton *RunButton;
+		QCheckBox *Box1;
+		QCheckBox *Box2 ;
+		QCheckBox *Box3;
+		QCheckBox *Box4 ;
+		QCheckBox *Box5;
 };
 
