@@ -1,9 +1,10 @@
 #include <iostream>
-#include "Simulator.h"
+#include "Instruction.h"
 
 using namespace std;
 
 int main(){
-	Simulator *MySim;	
-	MySim = new Simulator();
+	Instruction inst(ADD,r3,r6,r7);
+	inst.setInstruction(ADD);
+	cout<<inst.getInstruction()<<endl;
 }
