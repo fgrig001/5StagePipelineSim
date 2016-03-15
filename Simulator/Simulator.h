@@ -55,6 +55,7 @@ class Simulator{
 		map<string, int> labels;
 		map<int, int> registerVals;
 		vector<int> memory;
+		int instructionCount;
 		int PC;
 		int CYCLE;
 	private:

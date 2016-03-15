@@ -9,6 +9,7 @@ Instruction::Instruction(){
 	myReg2 = NONE;
 	myReg3 = NONE;
 	label = "";
+	instructionNumber = -1;
 }
 
 Instruction::Instruction(Instructions new_instruction,
@@ -20,7 +21,8 @@ Instruction::Instruction(Instructions new_instruction,
 	myReg1(new_reg1),
 	myReg2(new_reg2),
 	myReg3(new_reg3),
-	label(new_label)
+	label(new_label),
+	instructionNumber(-1)
 {
 }
 
@@ -32,7 +34,8 @@ Instruction::Instruction(Instructions new_instruction,
 	myReg1(new_reg1),
 	myReg2(new_reg2),
 	myReg3(new_reg3),
-	label("")
+	label(""),
+	instructionNumber(-1)
 {
 }
 

@@ -10,7 +10,8 @@ Simulator::Simulator():
 	fullForwarding(false),
 	registerBypassing(false),
 	branchPredictedNotTaken(false),
-	memory(memorySize, 0)
+	memory(memorySize, 0),
+	instructionCount(0)
 {
 	MyFetch = new Fetch(this);	
 	MyDecode = new Decode (this);
@@ -28,29 +29,28 @@ void Simulator::addInstruction(Instructions I, Registers reg1,Registers reg2, Re
 }
 
 void Simulator::run(){
-	while(1){
-		//MyFetch->print();
-		//cout << "running update fetch" << endl;
-		MyFetch->update();
-		//cout << "running update decode" << endl;
-		MyDecode->update();
-		//cout << "running update ex" << endl;
-		MyExecute->update();
-		//cout << "running update mem" << endl;
-		MyMemAccess->update();
-		//cout << "running update wb" << endl;
+	while(PC<10){
+		// Update pipeline stages
 		MyWriteback->update();
-		//MyFetch->print();
-		//cout << "running execute fetch" << endl;
-		MyFetch->execute();
-		//cout << "running execute decode" << endl;
-		MyDecode->execute();
-		//cout << "running execute ex" << endl;
-		MyExecute->execute();
-		//cout << "running execute mem" << endl;		
-		MyMemAccess->execute();
-		//cout << "running execute wb" << endl;
+		MyMemAccess->update();
+		MyExecute->update();
+		MyDecode->update();
+		MyFetch->update();
+		// Execute pipeline stages
 		MyWriteback->execute();
+		MyMemAccess->execute();
+		MyExecute->execute();
+		MyDecode->execute();
+		MyFetch->execute();
+		// Print pipeline stages
+		std::cout<<"Cycle: "<<CYCLE<<"--------------\n";
+		MyFetch->print();
+		MyDecode->print();
+		MyExecute->print();
+		MyMemAccess->print();
+		MyWriteback->print();
+		std::cout<<std::endl;
+		// Incriment CYCLE counter
 		CYCLE++;	
 	}
 }

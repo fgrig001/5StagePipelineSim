@@ -30,6 +30,7 @@ class Instruction{
 		Registers getReg3(){return myReg3;}
 		string getLabel(){return label;}
 		Instructions getInstruction(){return myInstruction;}
+		int instructionNumber;
 	private:
 		string label;
 		Instructions myInstruction;

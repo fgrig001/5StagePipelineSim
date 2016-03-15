@@ -1,7 +1,10 @@
 #pragma once
+
 #include <string>
 #include "Instruction.h"
+
 class Simulator;
+
 class PipelineStage{
 	public:
 		PipelineStage(Simulator *sim);
@@ -11,6 +14,7 @@ class PipelineStage{
 		Instruction *inInstruction;
 		Instruction *outInstruction;
 		std::string name;
+		enum State{STALLING,PROCESSING,WAITING}myState;		
 	protected:
 		Simulator *MySim;
 };

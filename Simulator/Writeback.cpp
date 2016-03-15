@@ -15,6 +15,7 @@ void Writeback::update(){
 void Writeback::execute(){
 	if(inInstruction == NULL){
 		outInstruction = inInstruction;
+		myState = WAITING;
 		return;
 	}
 	switch(inInstruction->getInstruction()){
@@ -25,6 +26,7 @@ void Writeback::execute(){
 	case MULT:
 	case DIV:	
 		MySim -> registerVals.at(inInstruction ->getReg1()) = in;
+		myState = PROCESSING;
 		break;
 	default:
 		break;
