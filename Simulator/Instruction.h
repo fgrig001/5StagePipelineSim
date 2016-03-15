@@ -14,6 +14,7 @@ class Instruction{
 		void setReg1(Registers new_reg);
 		void setReg2(Registers new_reg);
 		void setReg3(Registers new_reg);
+		void print();
 		Registers getReg1(){return myReg1;}
 		Registers getReg2(){return myReg2;}
 		Registers getReg3(){return myReg3;}

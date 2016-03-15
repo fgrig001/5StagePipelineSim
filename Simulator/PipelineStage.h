@@ -2,11 +2,12 @@
 
 #include "Simulator.h"
 
-class Execute{
+class PipelineStage{
 	public:
-		Execute(Simulator *sim);
-		void update();
-		void execute();
+		virtual PipelineStage(Simulator *sim);
+		virtual void update()=0;
+		virtual void execute()=0;
+		void print();
 		Instruction *inInstruction;
 		Instruction *outInstruction;
 	private:

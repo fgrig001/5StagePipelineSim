@@ -1,6 +1,14 @@
 #pragma once
 
+class Simulator;
+class Fetch;
+class Decode;
+class Execute;
+class MemAccess;
+class Writeback;
+
 #include <vector>
+#include <cstdlib>
 #include "Instruction.h"
 #include "Fetch.h"
 #include "Decode.h"
@@ -8,16 +16,22 @@
 #include "MemAccess.h"
 #include "Writeback.h"
 
+using namespace std;
+
 class Simulator{
 	public:
 		Simulator();
+		void addInstruction(Instructions I, 
+							Registers reg1,
+							Registers reg2, 
+							Registers reg3);
 		void addInstruction();
 		void removeInstruction(int num);
-	private:
+		void run();
 		// Pipline Stage Objects
 		Fetch *MyFetch;
 		Decode *MyDecode;
-		Execute *MyEcecute;
+		Execute *MyExecute;
 		MemAccess *MyMemAccess;
 		Writeback *MyWriteback;
 		// Instruction Buffer 
@@ -33,4 +47,7 @@ class Simulator{
 		// TODO: add these configurations (non binary options?)
 		/* - Stage where branches are taken
 		   - Stage where branches are resloved */
+		int PC;
+		int CYCLE;
+	private:
 };

@@ -1,4 +1,6 @@
 #include "Instruction.h"
+#include <iostream>
+using namespace std;
 
 Instruction::Instruction(){
 	myInstruction = NOOP;
@@ -16,6 +18,13 @@ Instruction::Instruction(Instructions new_instruction,
 	myReg2(new_reg2),
 	myReg3(new_reg3)
 {
+}
+
+void Instruction::print(){
+	cout<<myInstruction<<" "
+		<<myReg1<<" "
+		<<myReg2<<" "
+		<<myReg3<<endl;
 }
 
 void Instruction::setInstruction(Instructions new_instruction){
