@@ -1,14 +1,12 @@
 #pragma once
 
 #include "Simulator.h"
-
-class Writeback{
+#include "PipelineStage.h"
+#include <string>
+class Writeback : public PipelineStage{
 	public:
 		Writeback(Simulator *sim);
 		void update();
 		void execute();
 	private:
-		Instruction *inInstruction;
-		Instruction *outInstruction;
-		Simulator *MySim;
 };

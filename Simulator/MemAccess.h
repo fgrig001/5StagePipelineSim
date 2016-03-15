@@ -1,14 +1,12 @@
 #pragma once
 
 #include "Simulator.h"
+#include "PipelineStage.h"
 
-class MemAccess{
+class MemAccess : public PipelineStage{
 	public:
 		MemAccess(Simulator *sim);
 		void update();
 		void execute();
-		Instruction *inInstruction;
-		Instruction *outInstruction;
 	private:
-		Simulator *MySim;
 };

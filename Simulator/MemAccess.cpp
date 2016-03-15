@@ -1,11 +1,11 @@
 #include "MemAccess.h"
-
+#include <string>
 
 MemAccess::MemAccess(Simulator *sim):
-	MySim(sim),
-	inInstruction(NULL),
-	outInstruction(NULL)
-{}
+	PipelineStage(sim)
+{
+	name = "MemAccess";
+}
 
 void MemAccess::update(){
 	inInstruction = MySim->MyExecute->outInstruction;

@@ -7,6 +7,8 @@ class Execute;
 class MemAccess;
 class Writeback;
 
+
+#include "PipelineStage.h"
 #include <vector>
 #include <cstdlib>
 #include "Instruction.h"

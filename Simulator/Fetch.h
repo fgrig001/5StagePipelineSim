@@ -1,15 +1,12 @@
 #pragma once
 
 #include "Simulator.h"
-
-class Fetch{
+#include "PipelineStage.h"
+#include <string>
+class Fetch : public PipelineStage{
 	public:
 		Fetch(Simulator *sim);
 		void update();
 		void execute();
-		void print();
-		Instruction *inInstruction;
-		Instruction *outInstruction;
 	private:
-		Simulator *MySim;
 };

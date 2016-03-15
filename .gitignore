@@ -29,3 +29,6 @@
 
 # Hidden . files
 .*
+
+# Swap ~ files
+*~

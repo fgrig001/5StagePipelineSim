@@ -1,14 +1,12 @@
 #pragma once
 
 #include "Simulator.h"
+#include "PipelineStage.h"
 
-class Execute{
+class Execute : public PipelineStage{
 	public:
 		Execute(Simulator *sim);
 		void update();
 		void execute();
-		Instruction *inInstruction;
-		Instruction *outInstruction;
 	private:
-		Simulator *MySim;
 };

@@ -1,11 +1,11 @@
 #include "Execute.h"
-
+#include <string>
 
 Execute::Execute(Simulator *sim):
-	MySim(sim),
-	inInstruction(NULL),
-	outInstruction(NULL)
-{}
+	PipelineStage(sim)
+{
+	name = "Execute";
+}
 
 void Execute::update(){
 	inInstruction = MySim->MyDecode->outInstruction;

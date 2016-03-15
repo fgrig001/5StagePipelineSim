@@ -1,12 +1,13 @@
 #include "Fetch.h"
+#include "PipelineStage.h"
 #include <iostream>
-
+#include <string>
 
 Fetch::Fetch(Simulator *sim):
-	MySim(sim),
-	inInstruction(0),
-	outInstruction(0)
-{}
+	PipelineStage(sim)
+{
+	name = "Fetch";
+}
 
 void Fetch::update(){
 	if(MySim->PC+1 < MySim->instructionBuffer.size()){
@@ -19,12 +20,4 @@ void Fetch::update(){
 void Fetch::execute(){
 	outInstruction = inInstruction;
 	inInstruction = NULL;
-}
-
-void Fetch::print(){
-	std::cout<<"Fetch-------------\n";
-	if(inInstruction) inInstruction->print();
-	else std::cout<<"inInstruction empty\n";
-	if(outInstruction) outInstruction->print();
-	else std::cout<<"outInstruction empty\n";
 }

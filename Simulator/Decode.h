@@ -1,14 +1,12 @@
 #pragma once
 
 #include "Simulator.h"
-
-class Decode{
+#include "PipelineStage.h"
+#include <string>
+class Decode : public PipelineStage {
 	public:
 		Decode(Simulator *sim);
 		void update();
 		void execute();
-		Instruction *inInstruction;
-		Instruction *outInstruction;
 	private:
-		Simulator *MySim;
 };

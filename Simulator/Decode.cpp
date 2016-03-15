@@ -1,11 +1,12 @@
 #include "Decode.h"
-
+#include "PipelineStage.h"
+#include <string>
 
 Decode::Decode(Simulator *sim):
-	MySim(sim),
-	inInstruction(NULL),
-	outInstruction(NULL)
-{}
+	PipelineStage(sim)
+{
+	name = "Decode";
+}
 
 void Decode::update(){
 	inInstruction = MySim->MyFetch->outInstruction;

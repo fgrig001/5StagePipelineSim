@@ -1,10 +1,10 @@
 #include "Writeback.h"
-
+#include <string>
 Writeback::Writeback(Simulator *sim):
-	MySim(sim),
-	inInstruction(NULL),
-	outInstruction(NULL)
-{}
+	PipelineStage(sim)
+{
+	name = "Writeback";
+}
 
 void Writeback::update(){
 	inInstruction = MySim->MyMemAccess->outInstruction;

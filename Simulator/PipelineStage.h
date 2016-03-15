@@ -1,15 +1,16 @@
 #pragma once
-
-#include "Simulator.h"
-
+#include <string>
+#include "Instruction.h"
+class Simulator;
 class PipelineStage{
 	public:
-		virtual PipelineStage(Simulator *sim);
+		PipelineStage(Simulator *sim);
 		virtual void update()=0;
 		virtual void execute()=0;
 		void print();
 		Instruction *inInstruction;
 		Instruction *outInstruction;
-	private:
+		std::string name;
+	protected:
 		Simulator *MySim;
 };
