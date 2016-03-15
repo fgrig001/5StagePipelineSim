@@ -11,6 +11,8 @@ class Writeback;
 #include "PipelineStage.h"
 #include <vector>
 #include <cstdlib>
+#include <map>
+#include <string>
 #include "Instruction.h"
 #include "Fetch.h"
 #include "Decode.h"
@@ -19,9 +21,10 @@ class Writeback;
 #include "Writeback.h"
 
 using namespace std;
-
+const int memorySize = 1000;
 class Simulator{
 	public:
+		
 		Simulator();
 		void addInstruction(Instructions I, 
 							Registers reg1,
@@ -49,6 +52,9 @@ class Simulator{
 		// TODO: add these configurations (non binary options?)
 		/* - Stage where branches are taken
 		   - Stage where branches are resloved */
+		map<string, int> labels;
+		map<int, int> registerVals;
+		vector<int> memory;
 		int PC;
 		int CYCLE;
 	private:

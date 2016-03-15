@@ -8,5 +8,6 @@ class Writeback : public PipelineStage{
 		Writeback(Simulator *sim);
 		void update();
 		void execute();
+		int in;
 	private:
 };

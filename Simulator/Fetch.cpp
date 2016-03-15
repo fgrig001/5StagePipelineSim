@@ -10,7 +10,7 @@ Fetch::Fetch(Simulator *sim):
 }
 
 void Fetch::update(){
-	if(MySim->PC+1 < MySim->instructionBuffer.size()){
+	if(MySim->PC < MySim->instructionBuffer.size()){
 		inInstruction = MySim->instructionBuffer.at(MySim->PC);
 	}else{
 		inInstruction = NULL;
@@ -20,4 +20,5 @@ void Fetch::update(){
 void Fetch::execute(){
 	outInstruction = inInstruction;
 	inInstruction = NULL;
+	MySim -> PC += 1;
 }

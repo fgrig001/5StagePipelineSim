@@ -8,5 +8,6 @@ class MemAccess : public PipelineStage{
 		MemAccess(Simulator *sim);
 		void update();
 		void execute();
+		int inA, inData, outData;
 	private:
 };

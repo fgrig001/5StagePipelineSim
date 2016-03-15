@@ -8,5 +8,7 @@ class Execute : public PipelineStage{
 		Execute(Simulator *sim);
 		void update();
 		void execute();
+		int inA, inB, outA, outB;
 	private:
+		
 };
