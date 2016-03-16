@@ -36,13 +36,34 @@ void Decode::execute(){
 		return;	
 	}
 	// Valid instruction
-	if(inInstruction -> getReg2() != NONE){
-		outA = MySim -> registerVals.at(inInstruction -> getReg2());
-	}
-	if(inInstruction -> getReg3() != NONE){
-		outB = MySim -> registerVals.at(inInstruction -> getReg3());
-	}else{ //TODO: Potential conflict with BR instruction
-		outB = inInstruction -> reg3Val;
+	if(inInstruction -> getInstruction() == BRA){
+		if(inInstruction -> getReg1() != NONE
+		&& inInstruction -> getReg2() != NONE){
+			//Conditional Branch
+			outA = MySim -> registerVals.at(inInstruction -> getReg1());
+			outB = MySim -> registerVals.at(inInstruction -> getReg2());
+		}else if(inInstruction -> getReg1() == NONE
+		      && inInstruction -> getReg2() == NONE){
+			//Unconditional Branch			
+			outA = 0;
+			outB = 0;
+		}else{
+			//Unsupported Branch instruction
+			outA = -1;
+			outB = -1;
+		}
+
+	}else{
+		if(inInstruction -> getReg2() != NONE){
+			outA = MySim -> registerVals.at(inInstruction -> getReg2());
+		}else{
+			//Unsupported Instruction
+			outA = -1;
+		}if(inInstruction -> getReg3() != NONE){
+			outB = MySim -> registerVals.at(inInstruction -> getReg3());
+		}else{ //TODO: Potential conflict with BR instruction
+			outB = inInstruction -> reg3Val;
+		}
 	}
 	cout<<"OUTA: "<<outA<<endl;
 	cout<<"OUTB: "<<outB<<endl;

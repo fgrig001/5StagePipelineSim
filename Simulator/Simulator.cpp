@@ -47,16 +47,26 @@ void Simulator::run(){
 	for(int i=0;i<30;++i){
 		// Update pipeline stages
 		MyWriteback->update();
+		cout << "A" << endl;
 		MyMemAccess->update();
+		cout << "B" << endl;
 		MyExecute->update();
+		cout << "C" << endl;
 		MyDecode->update();
+		cout << "D" << endl;
 		MyFetch->update();
+		cout << "E" << endl;
 		// Execute pipeline stages
 		MyWriteback->execute();
+		cout << "F" << endl;
 		MyMemAccess->execute();
+		cout << "G" << endl;
 		MyExecute->execute();
+		cout << "H" << endl;		
 		MyDecode->execute();
+		cout << "I" << endl;
 		MyFetch->execute();
+		cout << "J" << endl;
 		// Print pipeline stages
 		std::cout<<"Cycle: "<<CYCLE<<"--------------\n";
 		std::cout<<"PC: "<<PC<<"--------------\n";
@@ -66,6 +76,11 @@ void Simulator::run(){
 		MyMemAccess->print();
 		MyWriteback->print();
 		std::cout<<std::endl;
+		cout << "Register Values" << endl;
+		for(int j = 0; j < registerVals.size(); ++j){
+			cout << registerVals[j] << ", ";
+		}
+		cout << endl;
 		// Incriment CYCLE counter
 		CYCLE++;	
 	}
