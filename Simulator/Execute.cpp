@@ -13,6 +13,8 @@ Execute::Execute(Simulator *sim):
 
 void Execute::update(){
 	inInstruction = MySim->MyDecode->outInstruction;
+	
+	//if(inInstruction && outInstruction && outInstruction -> getReg1() == inInstruction
 	inA = MySim->MyDecode->outA;
 	inB = MySim->MyDecode->outB;
 

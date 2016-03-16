@@ -15,6 +15,18 @@ void MemAccess::update(){
 	inInstruction = MySim->MyExecute->outInstruction;
 	inA = MySim->MyExecute->outA;
 	inData = MySim->MyExecute->outB;
+	//if(inInstruction){
+		//int dest = inInstruction -> getReg1();
+		//Instruction *execInst = MySim -> MyExecute -> inInstruction;
+		//if(execInst && execInst -> hasTwoSourceOperands()){
+		//	if(execInst -> getReg2() == inInstruction -> getReg1()
+                //       || execInst -> getReg3() == inInstruction -> getReg1()){
+		//		//Read after Write Hazard
+		//	}
+		//}
+		//int exSrc1 = MySim -> in
+	//}
+	 
 }
 
 void MemAccess::execute(){

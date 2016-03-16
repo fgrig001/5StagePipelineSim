@@ -25,6 +25,9 @@ class Instruction{
 		void setReg3(Registers new_reg);
 		void setLabel(string new_label);
 		void print();
+		void hasTwoSourceOperands(){
+			return myReg2 != NONE && myReg3 != NONE;
+		}
 		Registers getReg1(){return myReg1;}
 		Registers getReg2(){return myReg2;}
 		Registers getReg3(){return myReg3;}
