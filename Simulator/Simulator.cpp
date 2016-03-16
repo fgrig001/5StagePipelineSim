@@ -11,7 +11,8 @@ Simulator::Simulator():
 	registerBypassing(false),
 	branchPredictedNotTaken(false),
 	memory(memorySize, 0),
-	instructionCount(0)
+	instructionCount(0),
+	busyRegisters(10)
 {
 	MyFetch = new Fetch(this);	
 	MyDecode = new Decode (this);
@@ -24,12 +25,26 @@ Simulator::Simulator():
 	}
 }
 
-void Simulator::addInstruction(Instructions I, Registers reg1,Registers reg2, Registers reg3){
-	instructionBuffer.push_back(new Instruction(I,reg1,reg2,reg3));
+void Simulator::addInstruction(Instructions I, 
+							   Registers reg1,
+							   Registers reg2, 
+							   Registers reg3,
+							   int reg_3_val)
+{
+	instructionBuffer.push_back(new Instruction(I,reg1,reg2,reg3,reg_3_val));				
+}
+
+void Simulator::addInstruction(Instructions I, 
+							   Registers reg1,
+							   Registers reg2, 
+							   string label)
+{
+	instructionBuffer.push_back(new Instruction(I,reg1,reg2,label));				
 }
 
 void Simulator::run(){
-	while(PC<10){
+	//while(PC<10){
+	for(int i=0;i<30;++i){
 		// Update pipeline stages
 		MyWriteback->update();
 		MyMemAccess->update();
@@ -44,6 +59,7 @@ void Simulator::run(){
 		MyFetch->execute();
 		// Print pipeline stages
 		std::cout<<"Cycle: "<<CYCLE<<"--------------\n";
+		std::cout<<"PC: "<<PC<<"--------------\n";
 		MyFetch->print();
 		MyDecode->print();
 		MyExecute->print();

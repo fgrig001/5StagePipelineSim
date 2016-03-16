@@ -8,5 +8,6 @@ class Fetch : public PipelineStage{
 		Fetch(Simulator *sim);
 		void update();
 		void execute();
+		void flush();
 	private:
 };

@@ -10,33 +10,36 @@ Instruction::Instruction(){
 	myReg3 = NONE;
 	label = "";
 	instructionNumber = -1;
+	cout<<"construct 1\n";
+}
+
+Instruction::Instruction(Instructions new_instruction,
+						 Registers new_reg1,
+						 Registers new_reg2,
+						 string new_label):
+	myInstruction(new_instruction),
+	myReg1(new_reg1),
+	myReg2(new_reg2),
+	label(new_label),
+	instructionNumber(-1)
+{
+		cout<<"construct 2\n";
 }
 
 Instruction::Instruction(Instructions new_instruction,
 						 Registers new_reg1,
 						 Registers new_reg2,
 						 Registers new_reg3,
-						 string new_label):
+						 int reg_3_val):
 	myInstruction(new_instruction),
 	myReg1(new_reg1),
 	myReg2(new_reg2),
 	myReg3(new_reg3),
-	label(new_label),
-	instructionNumber(-1)
-{
-}
-
-Instruction::Instruction(Instructions new_instruction,
-						 Registers new_reg1,
-						 Registers new_reg2,
-						 Registers new_reg3):
-	myInstruction(new_instruction),
-	myReg1(new_reg1),
-	myReg2(new_reg2),
-	myReg3(new_reg3),
+	reg3Val(reg_3_val),
 	label(""),
 	instructionNumber(-1)
 {
+		cout<<"construct 3\n";
 }
 
 void Instruction::print(){

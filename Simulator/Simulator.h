@@ -29,7 +29,12 @@ class Simulator{
 		void addInstruction(Instructions I, 
 							Registers reg1,
 							Registers reg2, 
-							Registers reg3);
+							Registers reg3,
+							int reg_3_val=0);
+		void addInstruction(Instructions I, 
+							Registers reg1,
+							Registers reg2, 
+							string label);
 		void addInstruction();
 		void removeInstruction(int num);
 		void run();
@@ -54,6 +59,7 @@ class Simulator{
 		   - Stage where branches are resloved */
 		map<string, int> labels;
 		map<int, int> registerVals;
+		vector<int> busyRegisters;
 		vector<int> memory;
 		int instructionCount;
 		int PC;

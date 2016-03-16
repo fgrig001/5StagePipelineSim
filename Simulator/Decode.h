@@ -8,6 +8,7 @@ class Decode : public PipelineStage {
 		Decode(Simulator *sim);
 		void update();
 		void execute();
+		void flush();
 		int outA, outB; 
 	private:
 };

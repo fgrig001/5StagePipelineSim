@@ -16,7 +16,9 @@ void Fetch::update(){
 		if(inInstruction == NULL){ 
 			// Grab new instruction
 			inInstruction = MySim->instructionBuffer.at(MySim->PC);
-			inInstruction->instructionNumber = ++MySim->instructionCount;
+			if(inInstruction->instructionNumber == -1){
+				inInstruction->instructionNumber = ++MySim->instructionCount;
+			}
 		}else return; 
 	}else{ 
 		inInstruction = NULL;
@@ -42,4 +44,11 @@ void Fetch::execute(){
 		myState=PROCESSING;
 	}
 	MySim -> PC += 1;
+	cout<<"THE PC: "<<MySim->PC<<endl;
 }
+
+void Fetch::flush(){
+	inInstruction = NULL;
+	outInstruction = NULL;
+}
+
