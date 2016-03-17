@@ -10,7 +10,7 @@ Simulator::Simulator():
 	numRegisters(11),
 	fullForwarding(false),
 	registerBypassing(false),
-	branchPredictedNotTaken(true),
+	branchPredictedNotTaken(false),
 	memory(memorySize, 0),
 	instructionCount(0),
 	busyRegisters(11)

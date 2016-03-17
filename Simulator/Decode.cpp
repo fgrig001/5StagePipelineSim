@@ -63,8 +63,9 @@ void Decode::execute(){
 		myState = STALLING;
 		return;	
 	}
-	// If Branch Instruction
+	// If Branch instruction
 	if(inInstruction -> getInstruction() == BRA){
+
 		// If Conditional Branch
 		if(inInstruction -> getReg1() != NONE
 		&& inInstruction -> getReg2() != NONE){
@@ -72,7 +73,7 @@ void Decode::execute(){
 			outB = MySim -> registerVals.at(inInstruction -> getReg2());
 		// If Unconditional Branch	
 		}else if(inInstruction -> getReg1() == NONE
-		      && inInstruction -> getReg2() == NONE){		
+			  && inInstruction -> getReg2() == NONE){		
 			outA = 0;
 			outB = 0;
 		// Unsupported Branch instruction
@@ -80,6 +81,38 @@ void Decode::execute(){
 			outA = -1;
 			outB = -1;
 		}
+
+		// If branches are resolved in ID
+		if(MySim -> branchesResolveInID){
+			// If unconditional branch
+			if(inInstruction -> getReg2() == NONE){
+				std::cout<<inInstruction->getLabel()<<endl;
+				if(MySim->branchPredictedNotTaken){
+					int executeResult = MySim -> labels.at(inInstruction -> getLabel());
+					MySim -> PC = executeResult-1;
+					cout<<"FLUSHINGGGGG\n";
+					MySim -> MyFetch -> flush();
+				}
+				myState = PROCESSING;
+			// If conditional branch (and taken)
+			}else if(outA == outB){
+				if(MySim->branchPredictedNotTaken){
+					int executeResult = MySim -> labels.at(inInstruction -> getLabel());
+					MySim -> PC = executeResult-1;
+					MySim -> MyFetch -> flush();
+				}
+				myState = PROCESSING;
+			// If conditional branch (and not taken)
+			}else if(outA != outB){
+				if(!MySim->branchPredictedNotTaken){
+					MySim -> MyFetch -> flush();
+					MySim -> PC = inInstruction -> instructionNumber-1;			
+						cout << "BRANCH PC = " << MySim -> PC;				
+				}
+				myState = PROCESSING;
+			}
+		}
+	
 	// If instruction other than branch
 	}else{
 		// If valid reg2 register
