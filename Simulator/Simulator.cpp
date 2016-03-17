@@ -11,6 +11,7 @@ Simulator::Simulator():
 	fullForwarding(false),
 	registerBypassing(false),
 	branchPredictedNotTaken(false),
+	branchesResolveInID(false),
 	memory(memorySize, 0),
 	instructionCount(0),
 	busyRegisters(11)

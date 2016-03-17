@@ -46,6 +46,7 @@ void Execute::execute(){
 	case LD:
 	case ST:
 		outA = inA + inInstruction -> reg3Val;
+		myState = PROCESSING;
 		break;		
 	case SUB:
 		outA = inA - inB;
@@ -93,7 +94,6 @@ void Execute::execute(){
 					myState = PROCESSING;
 				}
 			}
-	
 		break;
 	}
 	outInstruction = inInstruction;	
