@@ -9,6 +9,7 @@ class Execute : public PipelineStage{
 		void update();
 		void execute();
 		int inA, inB, outA, outB;
+		map<int,int> forwardedValues;
 	private:
 		
 };

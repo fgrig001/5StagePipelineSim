@@ -12,6 +12,7 @@ class Writeback;
 #include <vector>
 #include <cstdlib>
 #include <map>
+#include <set>
 #include <string>
 #include "Instruction.h"
 #include "Fetch.h"
@@ -60,7 +61,7 @@ class Simulator{
 		   - Stage where branches are resloved */
 		map<string, int> labels;
 		map<int, int> registerVals;
-		vector<int> busyRegisters;
+		vector<set<int> > busyRegisters;
 		vector<int> memory;
 		int instructionCount;
 		int PC;

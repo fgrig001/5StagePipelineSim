@@ -33,8 +33,8 @@ void Decode::execute(){
 	switch(inInstruction -> getInstruction()){
 	case BRA:
 	case ST:
-		if(MySim -> busyRegisters.at(inInstruction -> getReg1())
-		|| MySim -> busyRegisters.at(inInstruction -> getReg2())){
+		if(!MySim -> busyRegisters.at(inInstruction -> getReg1()).empty()
+		|| !MySim -> busyRegisters.at(inInstruction -> getReg2()).empty()){
 			myState = STALLING;
 			cout << "STALLING RAW\n\n" << endl;
 			outInstruction = NULL;
@@ -44,10 +44,10 @@ void Decode::execute(){
 		}
 		break;	
 	default:
-		if((MySim -> busyRegisters.at(inInstruction -> getReg2()) != 0 
-		&& MySim -> busyRegisters.at(inInstruction -> getReg2()) != inInstruction -> instructionNumber)
-		|| (MySim -> busyRegisters.at(inInstruction -> getReg3())
-		&& MySim -> busyRegisters.at(inInstruction -> getReg3()) != inInstruction -> instructionNumber)){
+		set<int> busyReg2 = MySim -> busyRegisters.at(inInstruction -> getReg2());
+		set<int> busyReg3 = MySim -> busyRegisters.at(inInstruction -> getReg3());
+		if((!busyReg2.empty() && !(busyReg2.count(inInstruction -> instructionNumber) && busyReg2.size() == 1))
+		|| (!busyReg3.empty() && !(busyReg3.count(inInstruction -> instructionNumber) && busyReg3.size() == 1))){
 			myState = STALLING;
 			cout << "STALLING RAW\n\n" << endl;
 			outInstruction = NULL;
@@ -112,8 +112,14 @@ void Decode::execute(){
 				myState = PROCESSING;
 			}
 		}
-	
-	// If instruction other than branch
+	// If ST instruction	
+	}else if(inInstruction -> getInstruction() == ST){
+		if(inInstruction -> getReg1() != NONE
+		&& inInstruction -> getReg2() != NONE){
+			outB = MySim -> registerVals.at(inInstruction -> getReg1());
+			outA = MySim -> registerVals.at(inInstruction -> getReg2());
+		}
+	// If instruction other than branch or Store
 	}else{
 		// If valid reg2 register
 		if(inInstruction -> getReg2() != NONE){

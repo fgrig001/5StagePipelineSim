@@ -32,7 +32,8 @@ void Writeback::execute(){
 		cout << "WB writing to reg: " << inInstruction -> getReg1() << " val = " << in << endl;	
 		MySim -> registerVals.at(inInstruction ->getReg1()) = in;
 		myState = PROCESSING;
-		MySim -> busyRegisters[inInstruction -> getReg1()] = 0;
+		if(MySim -> busyRegisters.at(inInstruction -> getReg1()).count(inInstruction -> instructionNumber))
+			MySim -> busyRegisters.at(inInstruction -> getReg1()).erase(inInstruction -> instructionNumber);
 		break;
 	case ST:
 	case BRA:

@@ -45,7 +45,7 @@ void Simulator::addInstruction(Instructions I,
 
 void Simulator::run(){
 	//while(PC<10){
-	for(int i=0;i<20;++i){
+	for(int i=0;i<30;++i){
 		// Update pipeline stages
 		MyWriteback->update();
 		//cout << "A" << endl;

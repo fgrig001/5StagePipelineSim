@@ -50,11 +50,13 @@ void MemAccess::execute(){
 		return;
 	}
 	switch(inInstruction->getInstruction()){
-	case LD:	
+	case LD:
 		outData = MySim->memory.at(inA);
+		cout << "Loading value " << outData << " at location " << inA << endl;
 		myState = PROCESSING;
 		break;
 	case ST:
+		cout << "Storing value " << inData << " at location " << inA << endl;
 		MySim->memory.at(inA) = inData;
 		outData = inA;
 		myState = PROCESSING;

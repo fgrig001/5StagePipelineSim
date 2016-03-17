@@ -49,7 +49,7 @@ void Fetch::execute(){
 	}
 	// Update outInstruction
 	if(inInstruction && inInstruction -> hasDestination()){
-		MySim -> busyRegisters[inInstruction -> getReg1()] = inInstruction->instructionNumber;
+		MySim -> busyRegisters.at(inInstruction -> getReg1()).insert(inInstruction->instructionNumber);
 	}
 	outInstruction = inInstruction;
 	inInstruction = NULL;
@@ -66,10 +66,12 @@ void Fetch::execute(){
 void Fetch::flush(){
 	// May cause issues when current value of busyReg overwrote another value (non zero)
 	if(inInstruction && inInstruction->hasDestination()){
-		MySim->busyRegisters.at(inInstruction->getReg1()) = 0;
+		if(MySim->busyRegisters.at(inInstruction->getReg1()).count(inInstruction->instructionNumber))
+			MySim->busyRegisters.at(inInstruction->getReg1()).erase(inInstruction->instructionNumber);
 	}
 	if(outInstruction && outInstruction->hasDestination()){
-		MySim->busyRegisters.at(outInstruction->getReg1()) = 0;
+		if(MySim->busyRegisters.at(outInstruction->getReg1()).count(outInstruction->instructionNumber))
+			MySim->busyRegisters.at(outInstruction->getReg1()).erase(outInstruction->instructionNumber);
 	}
 	inInstruction = NULL;
 	outInstruction = NULL;

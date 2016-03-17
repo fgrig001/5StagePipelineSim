@@ -16,9 +16,16 @@ Execute::Execute(Simulator *sim):
 void Execute::update(){
 	// Get new instruction
 	inInstruction = MySim->MyDecode->outInstruction;
-	// Get input values 
-	inA = MySim->MyDecode->outA;
-	inB = MySim->MyDecode->outB;
+	// Get input values
+	//if(MySim -> fullForwarding){
+	//	if
+
+
+	//}else{ 
+		inA = MySim->MyDecode->outA;
+		inB = MySim->MyDecode->outB;
+	//}
+	forwardedValues.clear();
 }
 
 void Execute::execute(){
@@ -33,11 +40,13 @@ void Execute::execute(){
 	//cout<<"Instruction: "<<inInstruction->getInstruction()<<endl;
 	switch(inInstruction -> getInstruction()){
 	case ADD:
-	case LD:
-	case ST:
 		outA = inA + inB;
 		myState = PROCESSING;
 		break;	
+	case LD:
+	case ST:
+		outA = inA + inInstruction -> reg3Val;
+		break;		
 	case SUB:
 		outA = inA - inB;
 		myState = PROCESSING;
