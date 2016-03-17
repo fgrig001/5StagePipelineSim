@@ -54,6 +54,7 @@ class Simulator{
 		bool fullForwarding;
 		bool registerBypassing;
 		bool branchPredictedNotTaken;
+		bool branchesResolveInID;
 		// TODO: add these configurations (non binary options?)
 		/* - Stage where branches are taken
 		   - Stage where branches are resloved */

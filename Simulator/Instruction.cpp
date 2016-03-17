@@ -68,3 +68,19 @@ void Instruction::setReg3(Registers new_reg){
 void Instruction::setLabel(string new_label){
 	label = new_label;
 }
+
+bool Instruction::hasDestination(){
+	if(myInstruction == BRA || myInstruction == ST){
+		return false;
+	}
+	return true;
+}
+
+int Instruction::getDestination(){
+	if(hasDestination()){
+		return myReg1;
+	}else{
+		return -1;
+	}
+}
+

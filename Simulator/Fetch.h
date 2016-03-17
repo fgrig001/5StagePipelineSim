@@ -9,5 +9,6 @@ class Fetch : public PipelineStage{
 		void update();
 		void execute();
 		void flush();
+		int branchTarget;
 	private:
 };

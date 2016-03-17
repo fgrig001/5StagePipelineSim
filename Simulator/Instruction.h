@@ -35,6 +35,8 @@ class Instruction{
 		Registers getReg3(){return myReg3;}
 		string getLabel(){return label;}
 		Instructions getInstruction(){return myInstruction;}
+		bool hasDestination();
+		int getDestination();
 		int instructionNumber;
 		int reg3Val;
 	private:

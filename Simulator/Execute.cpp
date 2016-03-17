@@ -14,14 +14,15 @@ Execute::Execute(Simulator *sim):
 }
 
 void Execute::update(){
+	// Get new instruction
 	inInstruction = MySim->MyDecode->outInstruction;
-	
-	//if(inInstruction && outInstruction && outInstruction -> getReg1() == inInstruction
+	// Get input values 
 	inA = MySim->MyDecode->outA;
 	inB = MySim->MyDecode->outB;
 }
 
 void Execute::execute(){
+	// Test for valid in instruction
 	if(inInstruction == NULL){
 		outA = 0;
 		outB = 0;
@@ -29,7 +30,7 @@ void Execute::execute(){
 		myState = WAITING;
 		return;
 	}
-	cout<<"Instruction: "<<inInstruction->getInstruction()<<endl;
+	//cout<<"Instruction: "<<inInstruction->getInstruction()<<endl;
 	switch(inInstruction -> getInstruction()){
 	case ADD:
 	case LD:
@@ -50,31 +51,43 @@ void Execute::execute(){
 		myState = PROCESSING;
 		break;
 	case BRA:
-		cout<<"BRA\n";
-		cout<<"InA: "<<inA<<endl;
-		cout<<"InB: "<<inB<<endl;
+		// If unconditional branch
 		if(inInstruction -> getReg2() == NONE){
-			//TODO: we need to insert bubbles
 			std::cout<<inInstruction->getLabel()<<endl;
-			int executeResult = MySim -> labels.at(inInstruction -> getLabel());
-			MySim -> PC = executeResult-1;
-			cout<<"FLUSHINGGGGG\n";
-			MySim -> MyFetch -> flush();
-			MySim -> MyDecode -> flush();
+			if(MySim->branchPredictedNotTaken){
+				int executeResult = MySim -> labels.at(inInstruction -> getLabel());
+				MySim -> PC = executeResult-1;
+				cout<<"FLUSHINGGGGG\n";
+				MySim -> MyFetch -> flush();
+				MySim -> MyDecode -> flush();
+			}
+			
 			myState = PROCESSING;
+		// If conditional branch (and taken)
 		}else if(inA == inB){
-			//TODO: we need to insert bubbles
-			int executeResult = MySim -> labels.at(inInstruction -> getLabel())-1;
-			MySim -> PC = executeResult;
-			MySim -> MyFetch -> flush();
-			MySim -> MyDecode -> flush();
+			if(MySim->branchPredictedNotTaken){
+				int executeResult = MySim -> labels.at(inInstruction -> getLabel());
+				MySim -> PC = executeResult-1;
+				MySim -> MyFetch -> flush();
+				MySim -> MyDecode -> flush();
+			}
+			myState = PROCESSING;
+		// If conditional branch (and not taken)
+		}else if(inA != inB){
+			if(!MySim->branchPredictedNotTaken){
+				//int executeResult = MySim -> labels.at(inInstruction -> getLabel());
+				//MySim -> PC = executeResult-1;
+				MySim -> MyFetch -> flush();
+				MySim -> MyDecode -> flush();
+				MySim -> PC = inInstruction -> instructionNumber-1;			
+					cout << "BRANCH PC = " << MySim -> PC;				
+			}
 			myState = PROCESSING;
 		}
 		break;
-	}	
-	if(myState != STALLING){
-		outInstruction = inInstruction;
-	}else{
+	}
+	outInstruction = inInstruction;	
+	if(myState == STALLING){
 		outInstruction = NULL;
 	}
 	outB = inB;

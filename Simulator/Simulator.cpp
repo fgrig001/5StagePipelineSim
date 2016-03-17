@@ -1,25 +1,26 @@
 #include "Simulator.h"
 
 #include<iostream>
+
 using namespace std;
 
 Simulator::Simulator():
 	PC(0),
 	CYCLE(0),
-	numRegisters(10),
+	numRegisters(11),
 	fullForwarding(false),
 	registerBypassing(false),
-	branchPredictedNotTaken(false),
+	branchPredictedNotTaken(true),
 	memory(memorySize, 0),
 	instructionCount(0),
-	busyRegisters(10)
+	busyRegisters(11)
 {
 	MyFetch = new Fetch(this);	
 	MyDecode = new Decode (this);
 	MyExecute = new Execute(this);
 	MyMemAccess = new MemAccess(this);
 	MyWriteback = new Writeback(this);
-	registerStatus = new bool[numRegisters];
+	//registerStatus = new bool[numRegisters];
 	for(int i = 0; i < numRegisters; ++i){
 		registerVals.insert(make_pair(i, 0));
 	}
@@ -44,29 +45,29 @@ void Simulator::addInstruction(Instructions I,
 
 void Simulator::run(){
 	//while(PC<10){
-	for(int i=0;i<30;++i){
+	for(int i=0;i<20;++i){
 		// Update pipeline stages
 		MyWriteback->update();
-		cout << "A" << endl;
+		//cout << "A" << endl;
 		MyMemAccess->update();
-		cout << "B" << endl;
+		//cout << "B" << endl;
 		MyExecute->update();
-		cout << "C" << endl;
+		//cout << "C" << endl;
 		MyDecode->update();
-		cout << "D" << endl;
+		//cout << "D" << endl;
 		MyFetch->update();
-		cout << "E" << endl;
+		//cout << "E" << endl;
 		// Execute pipeline stages
 		MyWriteback->execute();
-		cout << "F" << endl;
+		//cout << "F" << endl;
 		MyMemAccess->execute();
-		cout << "G" << endl;
+		//cout << "G" << endl;
 		MyExecute->execute();
-		cout << "H" << endl;		
+		//cout << "H" << endl;		
 		MyDecode->execute();
-		cout << "I" << endl;
+		//cout << "I" << endl;
 		MyFetch->execute();
-		cout << "J" << endl;
+		//cout << "J" << endl;
 		// Print pipeline stages
 		std::cout<<"Cycle: "<<CYCLE<<"--------------\n";
 		std::cout<<"PC: "<<PC<<"--------------\n";

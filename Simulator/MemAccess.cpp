@@ -1,5 +1,7 @@
 #include "MemAccess.h"
 #include <string>
+#include <iostream>
+using namespace std;
 
 MemAccess::MemAccess(Simulator *sim):
 	PipelineStage(sim),
@@ -25,8 +27,19 @@ void MemAccess::update(){
 		//	}
 		//}
 		//int exSrc1 = MySim -> in
-	//}
-	 
+	//
+	/*if(inInstruction){
+		//switch(inInstrucion -> getInstruction()){
+			//case LD:
+				if(!MySim -> busyRegisters[inInstruction -> getReg1()]){
+					MySim -> busyRegisters[inInstruction -> getReg1()] = 1;
+				}else{
+					cout << "MEM STALL" << endl;
+				}		
+			
+		//}
+	}*/
+
 }
 
 void MemAccess::execute(){
@@ -52,4 +65,5 @@ void MemAccess::execute(){
 		break;
 	}
 	outInstruction = inInstruction;
+	//MySim -> busyRegisters[inInstruction -> getReg1()] = 0;
 }

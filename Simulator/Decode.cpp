@@ -20,6 +20,7 @@ void Decode::update(){
 }
 
 void Decode::execute(){
+
 	// No instruction
 	if(inInstruction == NULL){
 		cout<<"here\n";
@@ -29,44 +30,73 @@ void Decode::execute(){
 		myState = WAITING;
 		return;
 	}
+	switch(inInstruction -> getInstruction()){
+	case BRA:
+	case ST:
+		if(MySim -> busyRegisters.at(inInstruction -> getReg1())
+		|| MySim -> busyRegisters.at(inInstruction -> getReg2())){
+			myState = STALLING;
+			cout << "STALLING RAW\n\n" << endl;
+			outInstruction = NULL;
+			return;
+		}else{
+			myState = PROCESSING;
+		}
+		break;	
+	default:
+		if((MySim -> busyRegisters.at(inInstruction -> getReg2()) != 0 
+		&& MySim -> busyRegisters.at(inInstruction -> getReg2()) != inInstruction -> instructionNumber)
+		|| (MySim -> busyRegisters.at(inInstruction -> getReg3())
+		&& MySim -> busyRegisters.at(inInstruction -> getReg3()) != inInstruction -> instructionNumber)){
+			myState = STALLING;
+			cout << "STALLING RAW\n\n" << endl;
+			outInstruction = NULL;
+			return;
+		}else{
+			myState = PROCESSING;
+		}
+		break;
+	}
 	// Stalling
 	if(MySim->MyExecute->myState == STALLING){
 		cout<<"here2\n";
 		myState = STALLING;
 		return;	
 	}
-	// Valid instruction
+	// If Branch Instruction
 	if(inInstruction -> getInstruction() == BRA){
+		// If Conditional Branch
 		if(inInstruction -> getReg1() != NONE
 		&& inInstruction -> getReg2() != NONE){
-			//Conditional Branch
 			outA = MySim -> registerVals.at(inInstruction -> getReg1());
 			outB = MySim -> registerVals.at(inInstruction -> getReg2());
+		// If Unconditional Branch	
 		}else if(inInstruction -> getReg1() == NONE
-		      && inInstruction -> getReg2() == NONE){
-			//Unconditional Branch			
+		      && inInstruction -> getReg2() == NONE){		
 			outA = 0;
 			outB = 0;
+		// Unsupported Branch instruction
 		}else{
-			//Unsupported Branch instruction
 			outA = -1;
 			outB = -1;
 		}
-
+	// If instruction other than branch
 	}else{
+		// If valid reg2 register
 		if(inInstruction -> getReg2() != NONE){
 			outA = MySim -> registerVals.at(inInstruction -> getReg2());
+			//cout << "DE reading from reg: " << inInstruction -> getReg2() << " val = " << outA << endl;	
 		}else{
 			//Unsupported Instruction
 			outA = -1;
+		// If valid reg3 register (No an imediat)
 		}if(inInstruction -> getReg3() != NONE){
 			outB = MySim -> registerVals.at(inInstruction -> getReg3());
-		}else{ //TODO: Potential conflict with BR instruction
+		// If reg3 is an imediat value
+		}else{
 			outB = inInstruction -> reg3Val;
 		}
 	}
-	cout<<"OUTA: "<<outA<<endl;
-	cout<<"OUTB: "<<outB<<endl;
 	outInstruction = inInstruction;
 	inInstruction = NULL;
 	myState = PROCESSING;
