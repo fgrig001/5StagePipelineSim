@@ -7,15 +7,18 @@ using namespace std;
 Decode::Decode(Simulator *sim):
 	PipelineStage(sim),
 	outA(0),
-	outB(0)
+	outB(0),
+	forward(false)
 {
 	name = "Decode";
 }
 
 void Decode::update(){
+	
 	if(inInstruction == NULL){ // No prev stall
 		inInstruction = MySim->MyFetch->outInstruction;
 	}
+	
 	//Else: prev stall, do nothing
 }
 
@@ -30,32 +33,79 @@ void Decode::execute(){
 		myState = WAITING;
 		return;
 	}
-	switch(inInstruction -> getInstruction()){
-	case BRA:
-	case ST:
-		if(!MySim -> busyRegisters.at(inInstruction -> getReg1()).empty()
-		|| !MySim -> busyRegisters.at(inInstruction -> getReg2()).empty()){
-			myState = STALLING;
-			cout << "STALLING RAW\n\n" << endl;
-			outInstruction = NULL;
-			return;
-		}else{
-			myState = PROCESSING;
+
+	forward = false;
+	if(MySim -> fullForwarding){
+		cout << "ForwardedValues:" << endl;
+		for(auto elem : MySim -> forwardedValues){
+			cout << elem.first << ", " << elem.second << endl;
+		} 
+		switch(inInstruction -> getInstruction()){
+		case ADD:
+		case SUB:
+		case MULT:
+		case DIV:
+		case LD:
+			for(auto elem : MySim -> forwardedValues){
+				if(inInstruction -> getReg2() == elem.first){
+					forward = true;
+				}
+				if(inInstruction -> getReg3() == elem.first){
+					forward = true;
+				}
+			}
+			break;
+		case ST:
+		case BRA:
+			for(auto elem : MySim -> forwardedValues){
+				if(inInstruction -> getReg1() == elem.first){
+					forward = true;
+				}
+				if(inInstruction -> getReg2() == elem.first){
+					forward = true;
+				}
+			}
+			break;
+			
 		}
-		break;	
-	default:
-		set<int> busyReg2 = MySim -> busyRegisters.at(inInstruction -> getReg2());
-		set<int> busyReg3 = MySim -> busyRegisters.at(inInstruction -> getReg3());
-		if((!busyReg2.empty() && !(busyReg2.count(inInstruction -> instructionNumber) && busyReg2.size() == 1))
-		|| (!busyReg3.empty() && !(busyReg3.count(inInstruction -> instructionNumber) && busyReg3.size() == 1))){
-			myState = STALLING;
-			cout << "STALLING RAW\n\n" << endl;
-			outInstruction = NULL;
-			return;
-		}else{
-			myState = PROCESSING;
+	}
+
+
+	if(!forward){
+		switch(inInstruction -> getInstruction()){
+		case BRA:
+		case ST:
+			if(!MySim -> busyRegisters.at(inInstruction -> getReg1()).empty()
+			|| !MySim -> busyRegisters.at(inInstruction -> getReg2()).empty()){
+				if(!forward){
+					myState = STALLING;
+					cout << "STALLING RAW\n\n" << endl;
+					outInstruction = NULL;
+					return;
+				}else{
+					myState = PROCESSING;
+				}
+			}else{
+				myState = PROCESSING;
+			}
+			break;	
+		default:
+			set<int> busyReg2 = MySim -> busyRegisters.at(inInstruction -> getReg2());
+			set<int> busyReg3 = MySim -> busyRegisters.at(inInstruction -> getReg3());
+			if((!busyReg2.empty() && !(busyReg2.count(inInstruction -> instructionNumber) && busyReg2.size() == 1))
+			|| (!busyReg3.empty() && !(busyReg3.count(inInstruction -> instructionNumber) && busyReg3.size() == 1))){
+				if(!forward){
+					myState = STALLING;
+					cout << "STALLING RAW\n\n" << endl;
+					outInstruction = NULL;
+					return;	
+				}
+			
+			}else{
+				myState = PROCESSING;
+			}
+			break;
 		}
-		break;
 	}
 	// Stalling
 	if(MySim->MyExecute->myState == STALLING){

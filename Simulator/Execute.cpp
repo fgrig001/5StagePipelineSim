@@ -17,15 +17,51 @@ void Execute::update(){
 	// Get new instruction
 	inInstruction = MySim->MyDecode->outInstruction;
 	// Get input values
-	//if(MySim -> fullForwarding){
-	//	if
-
-
-	//}else{ 
+	bool inASet = false;
+	bool inBSet = false;
+	if(MySim -> fullForwarding && inInstruction != NULL){
+		switch(inInstruction -> getInstruction()){
+		case ADD:
+		case SUB:
+		case MULT:
+		case DIV:
+		case LD:
+			for(auto elem : MySim -> forwardedValues){
+				if(inInstruction -> getReg2() == elem.first){
+					inA = elem.second;
+					inASet = true;
+					cout << "InASet" << endl;
+				}
+				if(inInstruction -> getReg3() == elem.first){
+					inB = elem.second;
+					inBSet = true;
+					cout << "InBSet" << endl;
+				}
+			}
+			break;
+		case ST:
+		case BRA:
+			for(auto elem : MySim -> forwardedValues){
+				if(inInstruction -> getReg1() == elem.first){
+					inA = elem.second;
+					inASet = true;
+					cout << "InASet" << endl;
+				}
+				if(inInstruction -> getReg2() == elem.first){
+					inB = elem.second;
+					inBSet = true;
+					cout << "InBSet" << endl;
+				}
+			}
+			break;
+			
+		}
+			
+	}
+	if(!inASet)
 		inA = MySim->MyDecode->outA;
+	if(!inBSet)
 		inB = MySim->MyDecode->outB;
-	//}
-	forwardedValues.clear();
 }
 
 void Execute::execute(){
@@ -95,6 +131,10 @@ void Execute::execute(){
 				}
 			}
 		break;
+	}
+	if(inInstruction -> hasDestination()){
+		cout << "EX Forwarding : " << inInstruction->getReg1() << " val = " << outA << endl; 
+		MySim -> forwardedValues.insert(make_pair(inInstruction->getReg1(), outA));
 	}
 	outInstruction = inInstruction;	
 	if(myState == STALLING){

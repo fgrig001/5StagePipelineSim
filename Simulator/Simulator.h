@@ -6,7 +6,7 @@ class Decode;
 class Execute;
 class MemAccess;
 class Writeback;
-
+enum Stages{FETCH, DECODE, EXECUTE, MEMORY, WRITEBACK};
 
 #include "PipelineStage.h"
 #include <vector>
@@ -20,6 +20,8 @@ class Writeback;
 #include "Execute.h"
 #include "MemAccess.h"
 #include "Writeback.h"
+
+
 
 using namespace std;
 const int memorySize = 1000;
@@ -62,6 +64,7 @@ class Simulator{
 		map<string, int> labels;
 		map<int, int> registerVals;
 		vector<set<int> > busyRegisters;
+		map<int,int > forwardedValues;
 		vector<int> memory;
 		int instructionCount;
 		int PC;

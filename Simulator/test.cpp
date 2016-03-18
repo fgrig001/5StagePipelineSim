@@ -19,7 +19,7 @@ int main(){
 	// testing branch predicted taken / not taken
 	
 	sim.labels.insert(make_pair("bla",1));
-	sim.addInstruction(ADD,r3,r2,NONE,3);
+	sim.addInstruction(ADD,r3,r2,NONE,6);
 	sim.addInstruction(ADD,r4,r4,NONE,3);
 	sim.addInstruction(ST,r3,r4, NONE, 0);
 	//sim.addInstruction(ADD,r1,r1,NONE,1);

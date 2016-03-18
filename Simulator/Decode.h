@@ -10,6 +10,6 @@ class Decode : public PipelineStage {
 		void execute();
 		void flush();
 		int outA, outB; 
-		map<int,int> forwardedValues;
+		bool forward;
 	private:
 };
