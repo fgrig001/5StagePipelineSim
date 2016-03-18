@@ -26,7 +26,7 @@ void Decode::execute(){
 
 	// No instruction
 	if(inInstruction == NULL){
-		cout<<"here\n";
+		//cout<<"here\n";
 		outA = 0;
 		outB = 0;
 		outInstruction = NULL;
@@ -36,10 +36,10 @@ void Decode::execute(){
 
 	forward = false;
 	if(MySim -> fullForwarding){
-		cout << "ForwardedValues:" << endl;
-		for(auto elem : MySim -> forwardedValues){
-			cout << elem.first << ", " << elem.second << endl;
-		} 
+		//cout << "ForwardedValues:" << endl;
+		//for(auto elem : MySim -> forwardedValues){
+		//	cout << elem.first << ", " << elem.second << endl;
+		//} 
 		switch(inInstruction -> getInstruction()){
 		case ADD:
 		case SUB:
@@ -79,7 +79,7 @@ void Decode::execute(){
 			|| !MySim -> busyRegisters.at(inInstruction -> getReg2()).empty()){
 				if(!forward){
 					myState = STALLING;
-					cout << "STALLING RAW\n\n" << endl;
+					//cout << "STALLING RAW\n\n" << endl;
 					outInstruction = NULL;
 					return;
 				}else{
@@ -96,7 +96,7 @@ void Decode::execute(){
 			|| (!busyReg3.empty() && !(busyReg3.count(inInstruction -> instructionNumber) && busyReg3.size() == 1))){
 				if(!forward){
 					myState = STALLING;
-					cout << "STALLING RAW\n\n" << endl;
+					//cout << "STALLING RAW\n\n" << endl;
 					outInstruction = NULL;
 					return;	
 				}
@@ -109,7 +109,7 @@ void Decode::execute(){
 	}
 	// Stalling
 	if(MySim->MyExecute->myState == STALLING){
-		cout<<"here2\n";
+		//cout<<"here2\n";
 		myState = STALLING;
 		return;	
 	}
@@ -136,11 +136,11 @@ void Decode::execute(){
 		if(MySim -> branchesResolveInID){
 			// If unconditional branch
 			if(inInstruction -> getReg2() == NONE){
-				std::cout<<inInstruction->getLabel()<<endl;
+				//std::cout<<inInstruction->getLabel()<<endl;
 				if(MySim->branchPredictedNotTaken){
 					int executeResult = MySim -> labels.at(inInstruction -> getLabel());
 					MySim -> PC = executeResult-1;
-					cout<<"FLUSHINGGGGG\n";
+					//cout<<"FLUSHINGGGGG\n";
 					MySim -> MyFetch -> flush();
 				}
 				myState = PROCESSING;
@@ -157,7 +157,7 @@ void Decode::execute(){
 				if(!MySim->branchPredictedNotTaken){
 					MySim -> MyFetch -> flush();
 					MySim -> PC = inInstruction -> instructionNumber-1;			
-						cout << "BRANCH PC = " << MySim -> PC;				
+						//cout << "BRANCH PC = " << MySim -> PC;				
 				}
 				myState = PROCESSING;
 			}
@@ -192,7 +192,7 @@ void Decode::execute(){
 }
 
 void Decode::flush(){
-	cout<<"FLUSH\n";
+	//cout<<"FLUSH\n";
 	inInstruction = NULL;
 	outInstruction = NULL;
 	outA = 0;

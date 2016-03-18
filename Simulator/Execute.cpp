@@ -30,12 +30,12 @@ void Execute::update(){
 				if(inInstruction -> getReg2() == elem.first){
 					inA = elem.second;
 					inASet = true;
-					cout << "InASet" << endl;
+					//cout << "InASet" << endl;
 				}
 				if(inInstruction -> getReg3() == elem.first){
 					inB = elem.second;
 					inBSet = true;
-					cout << "InBSet" << endl;
+					//cout << "InBSet" << endl;
 				}
 			}
 			break;
@@ -45,12 +45,12 @@ void Execute::update(){
 				if(inInstruction -> getReg1() == elem.first){
 					inA = elem.second;
 					inASet = true;
-					cout << "InASet" << endl;
+					//cout << "InASet" << endl;
 				}
 				if(inInstruction -> getReg2() == elem.first){
 					inB = elem.second;
 					inBSet = true;
-					cout << "InBSet" << endl;
+					//cout << "InBSet" << endl;
 				}
 			}
 			break;
@@ -101,11 +101,11 @@ void Execute::execute(){
 		if(!MySim -> branchesResolveInID){
 			// If unconditional branch
 			if(inInstruction -> getReg2() == NONE){
-				std::cout<<inInstruction->getLabel()<<endl;
+				//std::cout<<inInstruction->getLabel()<<endl;
 				if(MySim->branchPredictedNotTaken){
 					int executeResult = MySim -> labels.at(inInstruction -> getLabel());
 					MySim -> PC = executeResult-1;
-					cout<<"FLUSHINGGGGG\n";
+					//cout<<"FLUSHINGGGGG\n";
 					MySim -> MyFetch -> flush();
 					MySim -> MyDecode -> flush();
 				}
@@ -125,7 +125,7 @@ void Execute::execute(){
 						MySim -> MyFetch -> flush();
 						MySim -> MyDecode -> flush();
 						MySim -> PC = inInstruction -> instructionNumber-1;			
-							cout << "BRANCH PC = " << MySim -> PC;				
+							//cout << "BRANCH PC = " << MySim -> PC;				
 					}
 					myState = PROCESSING;
 				}
@@ -133,7 +133,7 @@ void Execute::execute(){
 		break;
 	}
 	if(inInstruction -> hasDestination()){
-		cout << "EX Forwarding : " << inInstruction->getReg1() << " val = " << outA << endl; 
+		//cout << "EX Forwarding : " << inInstruction->getReg1() << " val = " << outA << endl; 
 		MySim -> forwardedValues.insert(make_pair(inInstruction->getReg1(), outA));
 	}
 	outInstruction = inInstruction;	

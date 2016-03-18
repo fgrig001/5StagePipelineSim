@@ -1,7 +1,7 @@
 #include "Simulator.h"
 
 #include<iostream>
-
+#include<iomanip>
 using namespace std;
 
 Simulator::Simulator():
@@ -49,42 +49,46 @@ void Simulator::run(){
 	for(int i=0;i<20;++i){
 		// Update pipeline stages
 		MyWriteback->update();
-		cout << "A" << endl;
+		//cout << "A" << endl;
 		MyMemAccess->update();
-		cout << "B" << endl;
+		//cout << "B" << endl;
 		MyExecute->update();
-		cout << "C" << endl;
+		//cout << "C" << endl;
 		MyDecode->update();
-		cout << "D" << endl;
+		//cout << "D" << endl;
 		MyFetch->update();
-		cout << "E" << endl;
+		//cout << "E" << endl;
 		// Execute pipeline stages
 		forwardedValues.clear();
 		MyWriteback->execute();
-		cout << "F" << endl;
+		//cout << "F" << endl;
 		MyMemAccess->execute();
-		cout << "G" << endl;
+		//cout << "G" << endl;
 		MyExecute->execute();
-		cout << "H" << endl;		
+		//cout << "H" << endl;		
 		MyDecode->execute();
-		cout << "I" << endl;
+		//cout << "I" << endl;
 		MyFetch->execute();
-		cout << "J" << endl;
+		//cout << "J" << endl;
 		// Print pipeline stages
 		
-		std::cout<<"Cycle: "<<CYCLE<<"--------------\n";
-		std::cout<<"PC: "<<PC<<"--------------\n";
-		MyFetch->print();
-		MyDecode->print();
-		MyExecute->print();
-		MyMemAccess->print();
-		MyWriteback->print();
-		std::cout<<std::endl;
-		cout << "Register Values" << endl;
-		for(int j = 0; j < registerVals.size(); ++j){
-			cout << registerVals[j] << ", ";
+		//std::cout<<"Cycle: "<<CYCLE<<"--------------\n";
+		//std::cout<<"PC: "<<PC<<"--------------\n";
+		if(i % 10 == 0){
+			cout << setw(4) << "Cyc" << setw(4) << "F" << setw(4) << "D" << setw(4) << "E" << setw(4) << "M" << setw(4) << "W" << endl; 
 		}
-		cout << endl;
+		cout << setw(4) << CYCLE;
+		MyFetch->print2();
+		MyDecode->print2();
+		MyExecute->print2();
+		MyMemAccess->print2();
+		MyWriteback->print2();
+		std::cout<<std::endl;
+		//cout << "Register Values" << endl;
+		//for(int j = 0; j < registerVals.size(); ++j){
+		//	cout << registerVals[j] << ", ";
+		//}
+		//cout << endl;
 		// Incriment CYCLE counter
 		CYCLE++;	
 	}

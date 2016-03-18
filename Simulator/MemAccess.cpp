@@ -52,13 +52,13 @@ void MemAccess::execute(){
 	switch(inInstruction->getInstruction()){
 	case LD:
 		outData = MySim->memory.at(inA);
-		cout << "Loading value " << outData << " at location " << inA << endl;
+		//cout << "Loading value " << outData << " at location " << inA << endl;
 		myState = PROCESSING;
-		cout << "MEM Forwarding : " << inInstruction->getReg1() << " val = " << outData << endl; 
+		//cout << "MEM Forwarding : " << inInstruction->getReg1() << " val = " << outData << endl; 
 		MySim -> forwardedValues.insert(make_pair(inInstruction -> getReg1(), outData));		
 		break;
 	case ST:
-		cout << "Storing value " << inData << " at location " << inA << endl;
+		//cout << "Storing value " << inData << " at location " << inA << endl;
 		MySim->memory.at(inA) = inData;
 		outData = inA;
 		myState = PROCESSING;

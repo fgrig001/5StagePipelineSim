@@ -10,7 +10,7 @@ Instruction::Instruction(){
 	myReg3 = NONE;
 	label = "";
 	instructionNumber = -1;
-	cout<<"construct 1\n";
+	//cout<<"construct 1\n";
 }
 
 Instruction::Instruction(Instructions new_instruction,
@@ -23,7 +23,7 @@ Instruction::Instruction(Instructions new_instruction,
 	label(new_label),
 	instructionNumber(-1)
 {
-		cout<<"construct 2\n";
+		//cout<<"construct 2\n";
 }
 
 Instruction::Instruction(Instructions new_instruction,
@@ -39,7 +39,7 @@ Instruction::Instruction(Instructions new_instruction,
 	label(""),
 	instructionNumber(-1)
 {
-		cout<<"construct 3\n";
+		//cout<<"construct 3\n";
 }
 
 void Instruction::print(){

@@ -20,7 +20,7 @@ void Fetch::update(){
 			if(!MySim->branchPredictedNotTaken && branchTarget){
 				MySim -> PC = branchTarget;
 			}
-			cout<<"Fetch PC: "<<MySim -> PC<<endl;
+			//cout<<"Fetch PC: "<<MySim -> PC<<endl;
 			inInstruction = MySim->instructionBuffer.at(MySim->PC);
 			if(inInstruction->getInstruction() == BRA){
 				branchTarget = MySim->labels.at(inInstruction -> getLabel());
@@ -59,7 +59,7 @@ void Fetch::execute(){
 		myState=PROCESSING;
 	}
 	MySim -> PC += 1;
-	cout<<"THE PC: "<<MySim->PC<<endl;
+	//cout<<"THE PC: "<<MySim->PC<<endl;
 	
 }
 

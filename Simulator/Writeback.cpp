@@ -29,10 +29,10 @@ void Writeback::execute(){
 	case MULT:
 	case DIV:
 		
-		cout << "WB writing to reg: " << inInstruction -> getReg1() << " val = " << in << endl;	
+		//cout << "WB writing to reg: " << inInstruction -> getReg1() << " val = " << in << endl;	
 		MySim -> registerVals.at(inInstruction ->getReg1()) = in;
 		myState = PROCESSING;
-		cout << "WB Forwarding : " << inInstruction->getReg1() << " val = " << in << endl; 
+		//cout << "WB Forwarding : " << inInstruction->getReg1() << " val = " << in << endl; 
 		MySim -> forwardedValues.insert(make_pair(inInstruction -> getReg1(), in));
 		if(MySim -> busyRegisters.at(inInstruction -> getReg1()).count(inInstruction -> instructionNumber))
 			MySim -> busyRegisters.at(inInstruction -> getReg1()).erase(inInstruction -> instructionNumber);

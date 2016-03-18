@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <iomanip>
 
 #include "PipelineStage.h"
 
@@ -35,5 +36,26 @@ void PipelineStage::print(){
 		case WAITING:
 			std::cout<<name<<": Waiting for instruction\n";
 			break;
+	}
+}
+
+void PipelineStage::print2(){
+	switch(myState){
+	case STALLING:
+		if(inInstruction == NULL){
+			std::cout<< setw(8) << name<<"ERROR STALLING"<<std::endl;
+		}
+		cout <<  setw(4) <<"*";
+		break;
+	case PROCESSING:
+		if(outInstruction == NULL){
+			std::cout<<name<<" ERROR!\n";
+			return;
+		}
+		cout << setw(4) << outInstruction -> instructionNumber;
+		break;
+	case WAITING:
+		cout << setw(4) << "";
+		break;
 	}
 }

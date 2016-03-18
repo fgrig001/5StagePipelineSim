@@ -11,6 +11,7 @@ class PipelineStage{
 		virtual void update()=0;
 		virtual void execute()=0;
 		void print();
+		void print2();
 		Instruction *inInstruction;
 		Instruction *outInstruction;
 		std::string name;
