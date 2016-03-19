@@ -10,7 +10,7 @@ MainWindow::MainWindow(QMainWindow *parent):
 
 	// Initialize output text editor and set properties
 	OutputTextWindow = new QTextEdit(this);
-	OutputTextWindow->setGeometry(10,360,430,280);
+	OutputTextWindow->setGeometry(10,380,430,280);
 	QFont font("Courier");
 	font.setStyleHint(QFont::Monospace);
 	OutputTextWindow->setFont(font);
@@ -31,9 +31,10 @@ MainWindow::MainWindow(QMainWindow *parent):
 
 	// Initialize run button and set properties
 	RunButton = new QPushButton("Run Simulation", this);
-	RunButton->setGeometry(10,110,140,30);
+	RunButton->setGeometry(10,130,140,30);
 	connect(RunButton,SIGNAL (released()),this,SLOT (handleRunButton()));
 
+	
 	// Initialize branch prediction box and set properties
 	BranchPredictionLabel = new QLabel("Branches Predicted",this);
 	BranchPredictionLabel->setGeometry(15,170,140,30);
@@ -64,12 +65,33 @@ MainWindow::MainWindow(QMainWindow *parent):
 	BranchResolvedBox->addItem("Execute");
 	connect(BranchResolvedBox,SIGNAL(currentIndexChanged(int)),
 		    this,SLOT(BranchResolvedChanged(int)));
+
+	NumCyclesLabel = new QLabel("20 Cycles",this);
+	NumCyclesLabel->setGeometry(15,105,140,30);
+	captureText = new QPushButton("Set Cycles", this);
+	captureText->setGeometry(10, 350, 100, 30);
+	numCyclesBox = new QLineEdit("", this);
+	numCyclesBox->setGeometry(120, 350, 100, 30);
+	connect(captureText,SIGNAL(clicked()),this, SLOT(handleNumCyclesButton()));
+
 }
 
 
 void MainWindow::handleClearButton(){
 	Sim.flushInstructionBuffer();	
 	InputListWidget->clear();
+}
+
+void MainWindow::handleNumCyclesButton(){
+	unsigned int x = numCyclesBox->text().toUInt();
+	if(x > 0){
+		Sim.numCycles = x;
+	}	
+	numCyclesBox->clear();
+	
+	NumCyclesLabel -> setText(tr((to_string(Sim.numCycles) + " Cycles").c_str()));
+	
+	
 }
 
 void MainWindow::handleLoadButton(){

@@ -16,7 +16,8 @@ Simulator::Simulator():
 	branchesTakenIn(0),
 	memory(memorySize, 0),
 	instructionCount(0),
-	busyRegisters(11)
+	busyRegisters(11),
+	numCycles(20)
 {
 	MyFetch = new Fetch(this);	
 	MyDecode = new Decode (this);
@@ -71,7 +72,7 @@ void Simulator::run(){
 	MyDecode->myState = PipelineStage::WAITING;
 	MyFetch->myState = PipelineStage::WAITING;
 	
-	for(int i=0;i<20;++i){
+	for(int i=0;i<numCycles;++i){
 
 		// Update pipeline stages
 		MyWriteback->update();

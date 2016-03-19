@@ -57,6 +57,7 @@ class Simulator{
 		// The number of total registers
 		int numRegisters;
 		// Pipline Configuration Featur States
+		int numCycles;
 		bool fullForwarding;
 		bool registerBypassing;
 		bool branchPredictedNotTaken;

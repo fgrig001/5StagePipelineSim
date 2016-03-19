@@ -1,0 +1,13 @@
+SUB r1 r1 r1
+ADD r5 r1 #56
+ADD r6 r1 #8
+Loop:
+ST r1 r5 #0
+ADD r5 r5 #1
+ADD r1 r1 #1
+BRA r1 r6 EndLoop
+ADD r9 r9 #0
+BRA Loop
+EndLoop:
+ADD r8 r1 #0
+
