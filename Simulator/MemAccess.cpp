@@ -71,3 +71,9 @@ void MemAccess::execute(){
 	outInstruction = inInstruction;
 	//MySim -> busyRegisters[inInstruction -> getReg1()] = 0;
 }
+
+void MemAccess::flush(){
+	inInstruction = NULL;
+	outInstruction = NULL;
+	inA = inData = outData = 0;
+}

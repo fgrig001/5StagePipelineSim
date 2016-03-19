@@ -11,5 +11,6 @@ class Decode : public PipelineStage {
 		void flush();
 		int outA, outB; 
 		bool forward;
+		bool flushFlag;
 	private:
 };

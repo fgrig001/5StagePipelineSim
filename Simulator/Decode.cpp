@@ -8,13 +8,14 @@ Decode::Decode(Simulator *sim):
 	PipelineStage(sim),
 	outA(0),
 	outB(0),
-	forward(false)
+	forward(false),
+	flushFlag(false)
 {
 	name = "Decode";
 }
 
 void Decode::update(){
-	
+	// If no stall	
 	if(inInstruction == NULL){ // No prev stall
 		inInstruction = MySim->MyFetch->outInstruction;
 	}
@@ -26,11 +27,14 @@ void Decode::execute(){
 
 	// No instruction
 	if(inInstruction == NULL){
-		//cout<<"here\n";
 		outA = 0;
 		outB = 0;
 		outInstruction = NULL;
-		myState = WAITING;
+		if(flushFlag && myState == FLUSHING){
+			flushFlag = false;	
+		}else{
+			myState = WAITING;
+		}
 		return;
 	}
 
@@ -79,7 +83,6 @@ void Decode::execute(){
 			|| !MySim -> busyRegisters.at(inInstruction -> getReg2()).empty()){
 				if(!forward){
 					myState = STALLING;
-					//cout << "STALLING RAW\n\n" << endl;
 					outInstruction = NULL;
 					return;
 				}else{
@@ -96,7 +99,6 @@ void Decode::execute(){
 			|| (!busyReg3.empty() && !(busyReg3.count(inInstruction -> instructionNumber) && busyReg3.size() == 1))){
 				if(!forward){
 					myState = STALLING;
-					//cout << "STALLING RAW\n\n" << endl;
 					outInstruction = NULL;
 					return;	
 				}
@@ -109,7 +111,6 @@ void Decode::execute(){
 	}
 	// Stalling
 	if(MySim->MyExecute->myState == STALLING){
-		//cout<<"here2\n";
 		myState = STALLING;
 		return;	
 	}
@@ -136,11 +137,9 @@ void Decode::execute(){
 		if(MySim -> branchesResolveInID){
 			// If unconditional branch
 			if(inInstruction -> getReg2() == NONE){
-				//std::cout<<inInstruction->getLabel()<<endl;
 				if(MySim->branchPredictedNotTaken){
 					int executeResult = MySim -> labels.at(inInstruction -> getLabel());
 					MySim -> PC = executeResult-1;
-					//cout<<"FLUSHINGGGGG\n";
 					MySim -> MyFetch -> flush();
 				}
 				myState = PROCESSING;
@@ -157,7 +156,6 @@ void Decode::execute(){
 				if(!MySim->branchPredictedNotTaken){
 					MySim -> MyFetch -> flush();
 					MySim -> PC = inInstruction -> instructionNumber-1;			
-						//cout << "BRANCH PC = " << MySim -> PC;				
 				}
 				myState = PROCESSING;
 			}
@@ -174,7 +172,6 @@ void Decode::execute(){
 		// If valid reg2 register
 		if(inInstruction -> getReg2() != NONE){
 			outA = MySim -> registerVals.at(inInstruction -> getReg2());
-			//cout << "DE reading from reg: " << inInstruction -> getReg2() << " val = " << outA << endl;	
 		}else{
 			//Unsupported Instruction
 			outA = -1;
@@ -192,9 +189,10 @@ void Decode::execute(){
 }
 
 void Decode::flush(){
-	//cout<<"FLUSH\n";
 	inInstruction = NULL;
 	outInstruction = NULL;
 	outA = 0;
 	outB = 0;
+	myState = FLUSHING;
+	flushFlag = true;
 }

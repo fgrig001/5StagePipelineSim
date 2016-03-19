@@ -46,3 +46,9 @@ void Writeback::execute(){
 	}
 	outInstruction = inInstruction;
 }
+
+void Writeback::flush(){
+	inInstruction = NULL;
+	outInstruction = NULL;
+	in = 0;
+}

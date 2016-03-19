@@ -1,0 +1,5 @@
+ADD r3 r2 #3
+BLA:
+ADD r4 r4 #3
+BRA r3 r4 BLA
+MULT r5 r4 r3

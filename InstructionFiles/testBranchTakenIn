@@ -1,0 +1,6 @@
+ADD r6 r7 r7
+LAB:
+ADD r1 r2 #2
+ADD r3 r4 #2
+BRA LAB
+ADD r7 r8 r9

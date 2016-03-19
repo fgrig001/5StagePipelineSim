@@ -1,0 +1,8 @@
+
+BLA:
+ADD r3 r2 #6
+ADD r4 r4 #3
+ST r3 r4 #0
+BRA r3 r4 BLA
+LD r6 r4 #0
+MULT r5 r4 r6

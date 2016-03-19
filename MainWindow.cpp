@@ -1,44 +1,110 @@
 #include "MainWindow.h"
+#include <iostream>
 
 MainWindow::MainWindow(QMainWindow *parent):
 	QMainWindow(parent)
 {	
-	// Sets the main window's size be greater than the specified size.
-	setMinimumSize(600,600); 
-	// Set window properties	
+	// Set MainWindow properties	
+	setMinimumSize(450,650); 
 	setWindowTitle("5 Stage Pipeline Simulator");
 
-	// Initialize list widged and set properties
-	ListWidget= new QListWidget(this);
-	//setCentralWidget(ListWidget);
-	//ListWidget->setMinimumSize(200,200);
-	ListWidget->setGeometry(180,30,400,280);
-	ListWidget->addItem("String1");
-	ListWidget->addItem("String2");
+	// Initialize output text editor and set properties
+	OutputTextWindow = new QTextEdit(this);
+	OutputTextWindow->setGeometry(10,360,430,280);
+	QFont font("Courier");
+	font.setStyleHint(QFont::Monospace);
+	OutputTextWindow->setFont(font);
 
-	// Initialize add button and set properties
-	AddButton = new QPushButton("Add Instruction", this);
-	AddButton->setGeometry(10,30,140,30);
+	// Initialize input list widget and set properties
+	InputListWidget= new QListWidget(this);
+	InputListWidget->setGeometry(180,30,250,300);
 
-	// Initialize remove button and set properties
-	RemoveButton = new QPushButton("Remove Instruction", this);
-	RemoveButton->setGeometry(10,70,140,30);
+	// Initialize load button and set properties
+	LoadButton = new QPushButton("Load Instructions", this);
+	LoadButton->setGeometry(10,30,140,30);
+	connect(LoadButton,SIGNAL (released()),this,SLOT (handleLoadButton()));
+
+	// Initialize clear instructions button and set properties
+	ClearButton = new QPushButton("Clear Instructions", this);
+	ClearButton->setGeometry(10,70,140,30);
+	connect(ClearButton,SIGNAL (released()),this,SLOT (handleClearButton()));
 
 	// Initialize run button and set properties
 	RunButton = new QPushButton("Run Simulation", this);
-	RunButton->setGeometry(10,270,140,30);
+	RunButton->setGeometry(10,110,140,30);
+	connect(RunButton,SIGNAL (released()),this,SLOT (handleRunButton()));
 
-	// Initialize checkboxes
-	Box1 = new QCheckBox("Box1",this);
-	Box1->setGeometry(20,110,140,30);
-	Box2 = new QCheckBox("Box2",this);
-	Box2->setGeometry(20,140,140,30);
-	Box3 = new QCheckBox("Box3",this);
-	Box3->setGeometry(20,170,140,30);
-	Box4 = new QCheckBox("Box4",this);
-	Box4->setGeometry(20,200,140,30);
-	Box5 = new QCheckBox("Box5",this);
-	Box5->setGeometry(20,230,140,30);
+	// Initialize branch prediction box and set properties
+	BranchPredictionLabel = new QLabel("Branches Predicted",this);
+	BranchPredictionLabel->setGeometry(15,170,140,30);
+	BranchPredictionBox = new QComboBox(this);
+	BranchPredictionBox->setGeometry(10,195,140,30);
+	BranchPredictionBox->addItem("Taken");
+	BranchPredictionBox->addItem("Not Taken");
+	connect(BranchPredictionBox,SIGNAL(currentIndexChanged(int)),
+		    this,SLOT(BranchPredictionChanged(int)));
 
+	// Initialize branch taken box and set properties
+	BranchTakenLabel = new QLabel("Branches Taken",this);
+	BranchTakenLabel->setGeometry(15,230,140,30);
+	BranchTakenBox = new QComboBox(this);
+	BranchTakenBox->setGeometry(10,255,140,30);
+	BranchTakenBox->addItem("Fetch");
+	BranchTakenBox->addItem("Decode");
+	BranchTakenBox->addItem("Execute");
+	connect(BranchTakenBox,SIGNAL(currentIndexChanged(int)),
+		    this,SLOT(BranchTakenChanged(int)));
 
+	// Initialize branch resolved box and set properties
+	BranchResolvedLabel = new QLabel("Branches Resolved",this);
+	BranchResolvedLabel->setGeometry(15,290,140,30);
+	BranchResolvedBox = new QComboBox(this);
+	BranchResolvedBox->setGeometry(10,315,140,30);
+	BranchResolvedBox->addItem("Decode");
+	BranchResolvedBox->addItem("Execute");
+	connect(BranchResolvedBox,SIGNAL(currentIndexChanged(int)),
+		    this,SLOT(BranchResolvedChanged(int)));
 }
+
+
+void MainWindow::handleClearButton(){
+	Sim.flushInstructionBuffer();	
+	InputListWidget->clear();
+}
+
+void MainWindow::handleLoadButton(){
+	fileName = QFileDialog::getOpenFileName(this,tr("Open Code File"),"./InstructionFiles");
+	Sim.parseInstructionFile(fileName.toStdString());
+	ifstream in_file(fileName.toStdString());
+	char str[255];
+	while(in_file.getline(str,255)){
+		QString qstr = QString::fromStdString(str);
+		InputListWidget->addItem(qstr);
+	}
+}
+
+void MainWindow::handleRunButton(){
+	OutputTextWindow->clear();
+	Sim.run();
+	ifstream in_file("out_file");
+	char str[255];
+	while(in_file.getline(str,255)){
+		QString qstr = QString::fromStdString(str);
+		OutputTextWindow->append(qstr);
+	}
+}
+
+void MainWindow::BranchPredictionChanged(int new_val){
+	Sim.branchPredictedNotTaken = new_val;
+}
+
+void MainWindow::BranchResolvedChanged(int new_val){
+	Sim.branchesResolveInID = !new_val;
+}
+
+void MainWindow::BranchTakenChanged(int new_val){
+	Sim.branchesTakenIn = new_val;
+}
+
+
+

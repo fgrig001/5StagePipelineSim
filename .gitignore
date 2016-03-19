@@ -32,3 +32,6 @@
 
 # Swap ~ files
 *~
+
+# Output files
+out_file

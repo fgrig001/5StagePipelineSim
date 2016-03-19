@@ -14,6 +14,7 @@ enum Stages{FETCH, DECODE, EXECUTE, MEMORY, WRITEBACK};
 #include <map>
 #include <set>
 #include <string>
+#include <stdlib.h>
 #include "Instruction.h"
 #include "Fetch.h"
 #include "Decode.h"
@@ -40,6 +41,8 @@ class Simulator{
 							string label);
 		void addInstruction();
 		void removeInstruction(int num);
+		void parseInstructionFile(string file_name);
+		void flushInstructionBuffer();
 		void run();
 		// Pipline Stage Objects
 		Fetch *MyFetch;
@@ -58,6 +61,7 @@ class Simulator{
 		bool registerBypassing;
 		bool branchPredictedNotTaken;
 		bool branchesResolveInID;
+		int branchesTakenIn; // 0:Fetch, 1:Decode, 2:Execute
 		// TODO: add these configurations (non binary options?)
 		/* - Stage where branches are taken
 		   - Stage where branches are resloved */

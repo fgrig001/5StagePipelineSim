@@ -39,23 +39,26 @@ void PipelineStage::print(){
 	}
 }
 
-void PipelineStage::print2(){
+void PipelineStage::print2(ostream &out){
 	switch(myState){
 	case STALLING:
 		if(inInstruction == NULL){
-			std::cout<< setw(8) << name<<"ERROR STALLING"<<std::endl;
+			out << setw(8) << name<<"ERROR STALLING"<<std::endl;
 		}
-		cout <<  setw(4) <<"*";
+		out << setw(4) <<"*";
 		break;
 	case PROCESSING:
 		if(outInstruction == NULL){
-			std::cout<<name<<" ERROR!\n";
+			out << name <<" ERROR!\n";
 			return;
 		}
-		cout << setw(4) << outInstruction -> instructionNumber;
+		out << setw(4) << outInstruction -> instructionNumber;
 		break;
 	case WAITING:
-		cout << setw(4) << "";
+		out << setw(4) << "";
+		break;
+	case FLUSHING: 
+		out << setw(4) << "F";
 		break;
 	}
 }

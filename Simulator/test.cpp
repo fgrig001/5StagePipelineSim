@@ -6,6 +6,7 @@ using namespace std;
 
 int main(){
 	Simulator sim;
+	sim.parseInstructionFile("test_instructions");
 	/*
 	sim.addInstruction(ADD,r3,r2,NONE,3); // 0
 	sim.labels.insert(make_pair("bla",1));
@@ -18,6 +19,7 @@ int main(){
 
 	// testing branch predicted taken / not taken
 	
+	/*
 	sim.labels.insert(make_pair("bla",1));
 	sim.addInstruction(ADD,r3,r2,NONE,6);
 	sim.addInstruction(ADD,r4,r4,NONE,3);
@@ -26,6 +28,7 @@ int main(){
 	sim.addInstruction(BRA,r3,r4,"bla");
 	sim.addInstruction(LD, r6, r4, NONE, 0);  
 	sim.addInstruction(MULT,r5,r4,r6);
+	*/
 	
 
 	// testing branches resolve in id or ex

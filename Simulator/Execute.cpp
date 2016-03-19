@@ -54,9 +54,7 @@ void Execute::update(){
 				}
 			}
 			break;
-			
 		}
-			
 	}
 	if(!inASet)
 		inA = MySim->MyDecode->outA;
@@ -101,7 +99,7 @@ void Execute::execute(){
 		if(!MySim -> branchesResolveInID){
 			// If unconditional branch
 			if(inInstruction -> getReg2() == NONE){
-				//std::cout<<inInstruction->getLabel()<<endl;
+				// If branch predicted not taken
 				if(MySim->branchPredictedNotTaken){
 					int executeResult = MySim -> labels.at(inInstruction -> getLabel());
 					MySim -> PC = executeResult-1;
@@ -109,7 +107,6 @@ void Execute::execute(){
 					MySim -> MyFetch -> flush();
 					MySim -> MyDecode -> flush();
 				}
-				myState = PROCESSING;
 			// If conditional branch (and taken)
 			}else if(inA == inB){
 					if(MySim->branchPredictedNotTaken){
@@ -118,18 +115,16 @@ void Execute::execute(){
 						MySim -> MyFetch -> flush();
 						MySim -> MyDecode -> flush();
 					}
-					myState = PROCESSING;
 				// If conditional branch (and not taken)
 				}else if(inA != inB){
 					if(!MySim->branchPredictedNotTaken){
 						MySim -> MyFetch -> flush();
 						MySim -> MyDecode -> flush();
 						MySim -> PC = inInstruction -> instructionNumber-1;			
-							//cout << "BRANCH PC = " << MySim -> PC;				
 					}
-					myState = PROCESSING;
 				}
 			}
+			myState = PROCESSING;
 		break;
 	}
 	if(inInstruction -> hasDestination()){
@@ -141,4 +136,10 @@ void Execute::execute(){
 		outInstruction = NULL;
 	}
 	outB = inB;
+}
+
+void Execute::flush(){
+	inInstruction = NULL;
+	outInstruction = NULL;
+	inA = inB = outA = outB = 0;
 }
